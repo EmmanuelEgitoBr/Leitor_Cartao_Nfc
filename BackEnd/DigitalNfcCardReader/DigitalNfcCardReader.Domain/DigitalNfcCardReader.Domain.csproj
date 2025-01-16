@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="Contracts\" />
+    <Folder Include="Commands\" />
   </ItemGroup>
 
 </Project>
