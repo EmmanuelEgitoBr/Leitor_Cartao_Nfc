@@ -4,6 +4,8 @@ using DigitalNfcCardReader.Infra.Data.MongoDb.Configuration.v1;
 using DigitalNfcCardReader.Infra.Data.MongoDb.Repositories.v1;
 using DigitalNfcCardReader.Infra.Data.Queries.v1.NfcCard.GetNfcInfoBySerialCode;
 using DigitalNfcCardReader.Infra.Data.Queries.v1.NfcCard.GetNfcInfoByTagId;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using MongoDB.Driver;
 
 namespace DigitalNfcCardReader.Api
@@ -13,7 +15,7 @@ namespace DigitalNfcCardReader.Api
         public static IServiceCollection AddApiInfrastructure(this IServiceCollection services)
         {
             services.AddScoped<INfcCardRepository, NfcCardMongoRepository>();
-            
+
             services.AddAutoMapper(typeof(GetNfcInfoBySerialCodeQueryProfile).Assembly);
 
             return services;
@@ -59,12 +61,25 @@ namespace DigitalNfcCardReader.Api
         public static IServiceCollection AddMediator(
             this IServiceCollection services)
         {
-            services.AddMediatR(config => 
+            services.AddMediatR(config =>
                 config.RegisterServicesFromAssemblies(
                         typeof(GetNfcInfoByTagIdQuery).Assembly));
             services.AddMediatR(config =>
                 config.RegisterServicesFromAssemblies(
                         typeof(CreateNfcCardCommand).Assembly));
+
+            return services;
+        }
+
+        public static IServiceCollection AddFirebaseInfrastructure(this IServiceCollection services,
+                                                                IConfiguration configuration)
+        {
+            //string firebaseConfigPath = Path.Combine(AppContext.BaseDirectory, "firebase-adminsdk.json");
+            string firebaseConfigPath = configuration.GetSection("FirebaseConfig:configPath").Value!;
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromFile(firebaseConfigPath)
+            });
 
             return services;
         }
