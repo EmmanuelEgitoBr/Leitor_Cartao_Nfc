@@ -1,10 +1,10 @@
 ﻿using DigitalNfcCardReader.Domain.Fixed;
 
-namespace DigitalNfcCardReader.Domain.Entities.v1
+namespace DigitalNfcCardReader.Infra.Data.Queries.v1.NfcCard.GetNfcInfoByTagId
 {
-    public class NfcData
+    public sealed record GetNfcInfoByTagIdQueryResponseDetail
     {
-        public long TagId {  get; set; }
+        public long TagId { get; set; }
         public string CardSerialCode { get; set; } = string.Empty;
         public string? PatientName { get; set; }
         public DateTime CardDeliveryDate { get; set; } = DateTime.Now;
