@@ -33,7 +33,7 @@ namespace DigitalNfcCardReader.Api.Controllers.v1.NfcCard
             return result;
         }
 
-        [HttpPost("create-tag-id/{tagId:long}")]
+        [HttpPost("create-tag-id")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateNfcInfoByTagIdAsync(

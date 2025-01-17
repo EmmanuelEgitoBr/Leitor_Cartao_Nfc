@@ -6,6 +6,9 @@ using DigitalNfcCardReader.Infra.Data.Queries.v1.NfcCard.GetNfcInfoBySerialCode;
 using DigitalNfcCardReader.Infra.Data.Queries.v1.NfcCard.GetNfcInfoByTagId;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace DigitalNfcCardReader.Api
@@ -37,7 +40,8 @@ namespace DigitalNfcCardReader.Api
             services.AddScoped(services => mongoDBSettings);
 
             services.AddScoped(provider => new MongoClient(mongoDBSettings.ConnectionString)
-                                .GetDatabase(mongoDBSettings.Database)).AddSingleton<IMongoClient>(sp => sp.GetRequiredService<MongoClient>());
+            .GetDatabase(mongoDBSettings.Database))
+                .AddSingleton<IMongoClient>(sp => sp.GetRequiredService<MongoClient>());
 
             return services;
         }
@@ -68,13 +72,14 @@ namespace DigitalNfcCardReader.Api
                 config.RegisterServicesFromAssemblies(
                         typeof(CreateNfcCardCommand).Assembly));
 
+            BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
+
             return services;
         }
 
         public static IServiceCollection AddFirebaseInfrastructure(this IServiceCollection services,
                                                                 IConfiguration configuration)
         {
-            //string firebaseConfigPath = Path.Combine(AppContext.BaseDirectory, "firebase-adminsdk.json");
             string firebaseConfigPath = configuration.GetSection("FirebaseConfig:configPath").Value!;
             FirebaseApp.Create(new AppOptions
             {

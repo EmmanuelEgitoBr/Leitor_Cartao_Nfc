@@ -1,13 +1,11 @@
 ﻿using DigitalNfcCardReader.Domain.Fixed;
-using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace DigitalNfcCardReader.Infra.Data.Queries.v1.NfcCard.GetNfcInfoBySerialCode
 {
     public sealed record GetNfcInfoBySerialCodeQueryResponseDetail
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.Binary)]
         public Guid Id { get; set; }
 
         [BsonRepresentation(BsonType.Int64)]

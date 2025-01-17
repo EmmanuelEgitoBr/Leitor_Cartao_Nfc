@@ -6,12 +6,9 @@ namespace DigitalNfcCardReader.Domain.Entities.v1
 {
     public class NfcData
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.Binary)]
         public Guid Id { get; set; }
-
         [BsonRepresentation(BsonType.Int64)]
-        public long TagId {  get; set; }
+        public long TagId { get; set; }
         public string CardSerialCode { get; set; } = string.Empty;
         public string? PatientName { get; set; }
         public DateTime CardDeliveryDate { get; set; } = DateTime.Now;
