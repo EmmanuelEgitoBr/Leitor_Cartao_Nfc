@@ -1,4 +1,5 @@
-﻿using DigitalNfcCardReader.Domain.Contracts.v1;
+﻿using DigitalNfcCardReader.Domain.Commands.v1.NfcCard.Create;
+using DigitalNfcCardReader.Domain.Contracts.v1;
 using DigitalNfcCardReader.Infra.Data.MongoDb.Configuration.v1;
 using DigitalNfcCardReader.Infra.Data.MongoDb.Repositories.v1;
 using DigitalNfcCardReader.Infra.Data.Queries.v1.NfcCard.GetNfcInfoBySerialCode;
@@ -61,6 +62,9 @@ namespace DigitalNfcCardReader.Api
             services.AddMediatR(config => 
                 config.RegisterServicesFromAssemblies(
                         typeof(GetNfcInfoByTagIdQuery).Assembly));
+            services.AddMediatR(config =>
+                config.RegisterServicesFromAssemblies(
+                        typeof(CreateNfcCardCommand).Assembly));
 
             return services;
         }
