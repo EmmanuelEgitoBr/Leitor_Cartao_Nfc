@@ -1,4 +1,5 @@
 ﻿using DigitalNfcCardReader.Domain.Commands.v1.NfcCard.Create;
+using DigitalNfcCardReader.Domain.Commands.v1.NfcCard.Update;
 using DigitalNfcCardReader.Infra.Data.Queries.v1.NfcCard.GetNfcInfoBySerialCode;
 using DigitalNfcCardReader.Infra.Data.Queries.v1.NfcCard.GetNfcInfoByTagId;
 using MediatR;
@@ -12,7 +13,7 @@ namespace DigitalNfcCardReader.Api.Controllers.v1.NfcCard
     {
         private readonly IMediator _mediator = mediator;
 
-        [HttpGet("by-serial-code/{serialCode}")]
+        [HttpGet("get-by-serial/{serialCode}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<GetNfcInfoBySerialCodeQueryResponse>> GetNfcInfoBySerialCodeAsync(
@@ -23,7 +24,7 @@ namespace DigitalNfcCardReader.Api.Controllers.v1.NfcCard
             return result;
         }
 
-        [HttpGet("by-tag-id/{tagId:long}")]
+        [HttpGet("get-by-tag/{tagId:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<GetNfcInfoByTagIdQueryResponse>> GetNfcInfoByTagIdAsync(long tagId)
@@ -33,11 +34,22 @@ namespace DigitalNfcCardReader.Api.Controllers.v1.NfcCard
             return result;
         }
 
-        [HttpPost("create-tag-id")]
+        [HttpPost("create")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateNfcInfoByTagIdAsync(
             [FromBody] CreateNfcCardCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpPut("update")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateNfcInfoByTagIdAsync(
+            [FromBody] UpdateNfcCardCommand command)
         {
             await _mediator.Send(command);
 
