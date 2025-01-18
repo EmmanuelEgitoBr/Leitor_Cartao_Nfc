@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Leitor de Cartão NFC";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1>Leitor de Cartão NFC</h1>
+    <div>
+        <button class="btn-primary" id="readCardButton">Iniciar Leitura</button>
+        <p id="statusMessage" style="margin-top: 20px;"></p>
+    </div>
+</div>
+<script>
+    document.getElementById("readCardButton").addEventListener("click", async () => {
+        const statusMessage = document.getElementById("statusMessage");
+        statusMessage.textContent = "Lendo cartão...";
+
+        try {
+            const response = await fetch("/Home/ReadCard", {
+                method: "POST"
+            });
+
+            const result = await response.json();
+            statusMessage.textContent = result.message;
+        } catch (error) {
+            statusMessage.textContent = "Erro ao comunicar com o servidor: " + error.message;
+        }
+    });
+</script>
